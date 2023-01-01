@@ -26,6 +26,7 @@ class _DiscoveryPage extends State<DiscoveryPage> {
 
     isDiscovering = widget.start;
     if (isDiscovering) {
+      print(isDiscovering);
       _startDiscovery();
     }
   }
@@ -40,10 +41,12 @@ class _DiscoveryPage extends State<DiscoveryPage> {
   }
 
   void _startDiscovery() {
+    print('entered the discovering phase');
     _streamSubscription =
         FlutterBluetoothSerial.instance.startDiscovery().listen((r) {
       setState(() {
         results.add(r);
+        print(r);
       });
     });
 
