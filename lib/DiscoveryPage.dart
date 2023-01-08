@@ -1,11 +1,16 @@
 import 'dart:async';
 
+import 'package:digital_spirit_level/screens/initial_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import './BluetoothDeviceListEntry.dart';
 
-class DiscoveryPage extends StatefulWidget {
+final deviceProvider = StateProvider<BluetoothDevice?>((ref) => null);
+
+class DiscoveryPage extends ConsumerStatefulWidget {
   /// If true, discovery starts on page start, otherwise user must press action button.
   final bool start;
 
@@ -15,7 +20,7 @@ class DiscoveryPage extends StatefulWidget {
   _DiscoveryPage createState() => new _DiscoveryPage();
 }
 
-class _DiscoveryPage extends State<DiscoveryPage> {
+class _DiscoveryPage extends ConsumerState<DiscoveryPage> {
   late StreamSubscription<BluetoothDiscoveryResult> _streamSubscription;
   List<BluetoothDiscoveryResult> results = [];
   late bool isDiscovering;
@@ -98,6 +103,21 @@ class _DiscoveryPage extends State<DiscoveryPage> {
             device: result.device,
             rssi: result.rssi,
             onTap: () {
+              if (result.device.name == 'Digital Spirit Level') {
+                ref.read(pageProvider.notifier).update((state) => 1);
+                ref
+                    .read(deviceProvider.notifier)
+                    .update((state) => result.device);
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      'Invalid Device!',
+                      style: GoogleFonts.acme(),
+                    ),
+                  ),
+                );
+              }
               Navigator.of(context).pop(result.device);
             },
           );
