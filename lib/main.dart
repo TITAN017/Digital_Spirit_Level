@@ -11,15 +11,24 @@
 /////////////////////////////////////////////////////////////////
 
 // @dart=2.9
+import 'package:digital_spirit_level/Theme/color_theme.dart';
+import 'package:digital_spirit_level/screens/initial_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import './MainPage.dart';
+void main() => runApp(
+      ProviderScope(
+        child: ExampleApplication(),
+      ),
+    );
 
-void main() => runApp(new ExampleApplication());
-
-class ExampleApplication extends StatelessWidget {
+class ExampleApplication extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: MainPage());
+  Widget build(BuildContext context, ref) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: CustomTheme.themes[ref.watch(themeProvider)],
+      home: PrimaryPage(),
+    );
   }
 }

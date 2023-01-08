@@ -160,6 +160,26 @@ class _ChatPage extends State<ChatPage> {
                 ),
               ),
             ),
+            SizedBox(
+              height: 20,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _sendMessage("0");
+                print('sent msg 0');
+              },
+              child: Text('RESET'),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _sendMessage("1");
+                print('sent msg 1');
+              },
+              child: Text('TARE'),
+            ),
           ],
         ),
       ),
@@ -219,22 +239,14 @@ class _ChatPage extends State<ChatPage> {
 
   void _sendMessage(String text) async {
     text = text.trim();
-    textEditingController.clear();
 
     if (text.length > 0) {
       try {
-        connection.output.add(utf8.encode(text + "\r\n"));
+        connection.output.add(utf8.encode(text));
         await connection.output.allSent;
 
         setState(() {
           messages.add(_Message(clientID, text));
-        });
-
-        Future.delayed(Duration(milliseconds: 333)).then((_) {
-          listScrollController.animateTo(
-              listScrollController.position.maxScrollExtent,
-              duration: Duration(milliseconds: 333),
-              curve: Curves.easeOut);
         });
       } catch (e) {
         // Ignore error, but notify state
