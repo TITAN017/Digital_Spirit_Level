@@ -48,11 +48,19 @@ class _Page0State extends ConsumerState<Page0> {
                       future() async {
                         // async lambda seems to not working
                         if (value) {
+                          await FlutterBluetoothSerial.instance
+                              .requestDisable();
                           await FlutterBluetoothSerial.instance.requestEnable();
                           print(value);
                         } else
                           await FlutterBluetoothSerial.instance
                               .requestDisable();
+                        print(ref
+                            .read(btProvider.notifier)
+                            .state!
+                            .state
+                            .isEnabled);
+                        setState(() {});
                       }
 
                       future().then((_) {

@@ -67,6 +67,7 @@ class PrimaryPageState extends ConsumerState<PrimaryPage> {
           old!.addr = address;
           return old;
         });
+        setState(() {});
       });
     });
 

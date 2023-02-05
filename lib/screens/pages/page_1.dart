@@ -152,7 +152,7 @@ class _Page1State extends ConsumerState<Page1> {
               ),
               padding: EdgeInsets.all(8),
               child: Text(
-                'X    : ${ref.watch(valProvider.notifier).state.x}',
+                'X    : ${ref.watch(valProvider.notifier).state.x} \u00B0',
                 style:
                     GoogleFonts.acme(fontSize: 30, fontWeight: FontWeight.bold),
               ),
@@ -170,7 +170,7 @@ class _Page1State extends ConsumerState<Page1> {
               ),
               padding: EdgeInsets.all(8),
               child: Text(
-                'Y    : ${ref.watch(valProvider.notifier).state.y}',
+                'Y    : ${ref.watch(valProvider.notifier).state.y}\u00B0',
                 style:
                     GoogleFonts.acme(fontSize: 30, fontWeight: FontWeight.bold),
               ),
