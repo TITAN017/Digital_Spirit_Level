@@ -1,4 +1,5 @@
 import 'package:digital_spirit_level/screens/initial_screen.dart';
+import 'package:digital_spirit_level/services/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -75,7 +76,12 @@ class _Page0State extends ConsumerState<Page0> {
                                 ref.read(themeProvider.notifier).state],
                             fontSize: 16)),
                     subtitle: Text(
-                        ref.watch(btProvider.notifier).state!.state.toString(),
+                        ref
+                            .watch(btProvider.notifier)
+                            .state!
+                            .state
+                            .toString()
+                            .split('.')[1],
                         style: GoogleFonts.acme(
                             color: CustomTheme.textColor[
                                 ref.read(themeProvider.notifier).state],
@@ -154,14 +160,7 @@ class _Page0State extends ConsumerState<Page0> {
                           .state!
                           .state
                           .isEnabled) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              'Please Enable Bluetooth!',
-                              style: GoogleFonts.acme(),
-                            ),
-                          ),
-                        );
+                        showSnack(context, "Please Enable Bluetooth!");
                         return;
                       }
                       final BluetoothDevice selectedDevice =

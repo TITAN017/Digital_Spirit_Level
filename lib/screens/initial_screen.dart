@@ -2,7 +2,7 @@ import 'package:digital_spirit_level/Theme/icon_theme.dart';
 import 'package:digital_spirit_level/model/btmodel.dart';
 import 'package:digital_spirit_level/screens/pages/page_0.dart';
 import 'package:digital_spirit_level/screens/pages/page_1.dart';
-import 'package:digital_spirit_level/screens/pages/page_3.dart';
+import 'package:digital_spirit_level/screens/pages/page_2.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -151,7 +151,8 @@ class PrimaryPageState extends ConsumerState<PrimaryPage> {
           padding: EdgeInsets.all(15),
           onTabChange: (i) {
             var check = handleChange(ref, context, i);
-            print(check);
+            print(i);
+            setState(() {});
           },
           tabs: [
             GButton(

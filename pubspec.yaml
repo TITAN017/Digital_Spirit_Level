@@ -42,6 +42,8 @@ dependencies:
   flutter_cube: ^0.1.1
   ditredi: ^1.0.3
   zwidget: ^0.0.1
+  flutter_inset_box_shadow: ^1.0.8
+  animate_gradient: ^0.0.2
 
 dev_dependencies:
   flutter_test:
