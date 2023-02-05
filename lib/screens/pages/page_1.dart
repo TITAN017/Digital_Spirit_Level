@@ -13,8 +13,7 @@ import '../../model/msg.dart';
 
 final connectionProvider = StateProvider<BluetoothConnection?>((ref) => null);
 
-final valProvider =
-    StateProvider<XYVal>((ref) => XYVal(x: 'N/A (prov)', y: 'N/A (prov)'));
+final valProvider = StateProvider<XYVal>((ref) => XYVal(x: '0.00', y: '0.00'));
 
 class Page1 extends ConsumerStatefulWidget {
   const Page1({Key? key}) : super(key: key);
@@ -27,7 +26,7 @@ class _Page1State extends ConsumerState<Page1> {
   static final clientID = 0;
   var connection; //BluetoothConnection
 
-  List<Message> messages = [Message(1, "Y-Axis:N/A\nX-Axis:N/A")];
+  List<Message> messages = [Message(1, "Y-Axis:-0.00\nX-Axis:-0.00")];
   String _messageBuffer = '';
 
   final TextEditingController textEditingController =
@@ -68,19 +67,19 @@ class _Page1State extends ConsumerState<Page1> {
   @override
   void initState() {
     super.initState();
+    ref
+        .read(valProvider.notifier)
+        .update((state) => XYVal(x: getXAxis(), y: getYAxis()));
     final BluetoothDevice? dev = ref.read(deviceProvider.notifier).state;
     if (ref.read(deviceProvider.notifier).state == null) {
       SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
         ref.read(pageProvider.notifier).update((state) => 0);
         showSnack(context, 'Device Error');
+        print('log');
       });
+      print('log');
     } else {
-      Future.doWhile(() {
-        ref
-            .read(valProvider.notifier)
-            .update((state) => XYVal(x: getXAxis(), y: getYAxis()));
-        return !mounted;
-      });
+      print('log');
       print('success!');
       BluetoothConnection.toAddress(
               ref.read(deviceProvider.notifier).state!.address)
@@ -93,7 +92,7 @@ class _Page1State extends ConsumerState<Page1> {
           isConnecting = false;
           isDisconnecting = false;
         });
-
+        print('log');
         connection.input.listen(_onDataReceived).onDone(() {
           if (isDisconnecting) {
             print('Disconnecting locally!');
@@ -108,6 +107,7 @@ class _Page1State extends ConsumerState<Page1> {
         print('Cannot connect, exception occured');
         print(error);
       });
+      print('log');
     }
   }
 
@@ -125,73 +125,17 @@ class _Page1State extends ConsumerState<Page1> {
 
   @override
   Widget build(BuildContext context) {
-    String xaxis = getXAxis();
-    String yaxis = getYAxis();
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.orange[400],
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            padding: EdgeInsets.all(10),
-            height: MediaQuery.of(context).size.height / 4,
-            //width: MediaQuery.of(context).size.width / 4,
-            alignment: Alignment.center,
-            child: Text(
-              'X : $xaxis deg',
-              style: TextStyle(
-                color: Colors.black45,
-                fontSize: 40,
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 30,
-          ),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.orange[400],
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            padding: EdgeInsets.all(10),
-            height: MediaQuery.of(context).size.height / 4,
-            //width: MediaQuery.of(context).size.width / 4,
-            alignment: Alignment.center,
-            child: Text(
-              'Y : $yaxis deg',
-              style: TextStyle(
-                color: Colors.black45,
-                fontSize: 40,
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          ElevatedButton(
-            onPressed: () {
-              _sendMessage("0");
-              print('sent msg 0');
-            },
-            child: Text('RESET'),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          ElevatedButton(
-            onPressed: () {
-              _sendMessage("1");
-              print('sent msg 1');
-            },
-            child: Text('TARE'),
-          ),
-        ],
-      ),
+    double x =
+        double.parse(ref.watch(valProvider.notifier).state.x) / 180 * 3.14;
+    double y =
+        double.parse(ref.watch(valProvider.notifier).state.y) / 180 * 3.14;
+    return Container(
+      decoration: BoxDecoration(),
+      width: MediaQuery.of(context).size.width,
+      /*constraints: BoxConstraints(
+          minWidth: MediaQuery.of(context).size.width,
+          minHeight: MediaQuery.of(context).size.height),*/
+      child: Column(),
     );
   }
 

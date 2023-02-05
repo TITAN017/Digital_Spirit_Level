@@ -6,15 +6,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-void handleChange(WidgetRef ref, BuildContext context, int index) {
+bool handleChange(WidgetRef ref, BuildContext context, int index) {
   int oldIndex = ref.read(pageProvider.notifier).state;
   if (index == 1) {
     if (ref.read(deviceProvider.notifier).state == null) {
       showSnack(context, 'Device Error!');
       ref.read(pageProvider.notifier).update((state) => 0);
       print(ref.read(pageProvider.notifier).state);
-      return;
+      return true;
+    }
+    if (!ref.read(btProvider.notifier).state!.state.isEnabled) {
+      showSnack(context, 'Please Enable Bluetooth!');
+      return true;
     }
   }
   ref.read(pageProvider.notifier).update((state) => index);
+  print(ref.read(pageProvider.notifier).state);
+  return false;
 }

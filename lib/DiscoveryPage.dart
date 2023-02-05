@@ -104,7 +104,7 @@ class _DiscoveryPage extends ConsumerState<DiscoveryPage> {
             rssi: result.rssi,
             onTap: () {
               if (result.device.name == 'Digital Spirit Level') {
-                ref.read(pageProvider.notifier).update((state) => 1);
+                //ref.read(pageProvider.notifier).update((state) => 1);
                 ref
                     .read(deviceProvider.notifier)
                     .update((state) => result.device);
@@ -118,6 +118,7 @@ class _DiscoveryPage extends ConsumerState<DiscoveryPage> {
                   ),
                 );
               }
+              print('popping now');
               Navigator.of(context).pop(result.device);
             },
           );

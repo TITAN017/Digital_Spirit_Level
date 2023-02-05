@@ -2,6 +2,7 @@ import 'package:digital_spirit_level/Theme/icon_theme.dart';
 import 'package:digital_spirit_level/model/btmodel.dart';
 import 'package:digital_spirit_level/screens/pages/page_0.dart';
 import 'package:digital_spirit_level/screens/pages/page_1.dart';
+import 'package:digital_spirit_level/screens/pages/page_3.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,7 +27,7 @@ class PrimaryPage extends ConsumerStatefulWidget {
 
 class PrimaryPageState extends ConsumerState<PrimaryPage> {
   BluetoothState btstate = BluetoothState.UNKNOWN;
-
+  late Object obj;
   String? _address = "...";
   String? _name = "...";
   List<BluetoothDevice> btdevice = [];
@@ -102,6 +103,8 @@ class PrimaryPageState extends ConsumerState<PrimaryPage> {
 
   @override
   Widget build(BuildContext context) {
+    Key navBarKey = const Key('NavBar');
+    int index = ref.watch(pageProvider);
     return Scaffold(
       appBar: AppBar(
         elevation: 2,
@@ -129,7 +132,7 @@ class PrimaryPageState extends ConsumerState<PrimaryPage> {
           ),
         ],
       ),
-      body: ref.watch(pageProvider) == 0 ? Page0() : Page1(),
+      body: selectPage(index),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30),
@@ -138,15 +141,17 @@ class PrimaryPageState extends ConsumerState<PrimaryPage> {
         padding: EdgeInsets.all(12),
         margin: EdgeInsets.all(15),
         child: GNav(
+          key: navBarKey,
           rippleColor: Colors.black,
-          selectedIndex: ref.watch(pageProvider.notifier).state,
+          selectedIndex: index,
           tabBorderRadius: 20,
           iconSize: 26,
           tabBackgroundColor: Colors.black26,
           gap: 5,
           padding: EdgeInsets.all(15),
-          onTabChange: (index) {
-            handleChange(ref, context, index);
+          onTabChange: (i) {
+            var check = handleChange(ref, context, i);
+            print(check);
           },
           tabs: [
             GButton(
@@ -168,5 +173,19 @@ class PrimaryPageState extends ConsumerState<PrimaryPage> {
         ),
       ),
     );
+  }
+}
+
+Widget selectPage(int index) {
+  switch (index) {
+    case 0:
+      return Page0();
+
+    case 1:
+      return Page1();
+    case 2:
+      return Page2();
+    default:
+      return Container();
   }
 }
